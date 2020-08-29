@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,16 +61,20 @@ public class RSSServices {
 		List<Object[]> tempResult = topicRepository.getHotTopics(idRequest,maxTopics);
 		List<Feed> tempFeeds = null;
 		List<TopicDAO> listTopics = new ArrayList<>();
+		List<FeedDAO> listFeedTemp =null;
 
 		for (Object[] objects : tempResult) {
-			System.out.println(">>> " + objects[0].toString() + " - >>> " + objects[1].toString());
+	
 			TopicDAO tempTopic  =  new TopicDAO(objects[0].toString()); 
 			
 			tempFeeds = topicRepository.feedItems(objects[0].toString());
 			
-			tempTopic.setHotTopicFeeds(tempFeeds.stream().map(item -> {
-				return new FeedDAO(item.getTitleFeed(), item.getLinkFeed());
-			}).collect(Collectors.toList()));
+			for (Feed feedDao : tempFeeds) {
+				listFeedTemp = new ArrayList<>();
+				listFeedTemp.add(new FeedDAO(feedDao.getTitleFeed(), feedDao.getLinkFeed()));
+			}
+
+			tempTopic.setHotTopicFeeds(listFeedTemp);
 			
 			listTopics.add(tempTopic);
 		}

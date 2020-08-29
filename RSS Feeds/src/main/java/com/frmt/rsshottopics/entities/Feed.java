@@ -84,13 +84,5 @@ public class Feed {
 
 	public void setListTopics(List<Topic> listTopics) {
 		this.listTopics = listTopics;
-	}
-
-	@Override
-	public String toString() {
-		return "Feed [idRequest=" + idRequest + ", idFeed=" + idFeed + ", titleFeed=" + titleFeed + ", linkFeed="
-				+ linkFeed + ", listTopics=" + listTopics + "]";
-	}
-	
-	
+	}	
 }

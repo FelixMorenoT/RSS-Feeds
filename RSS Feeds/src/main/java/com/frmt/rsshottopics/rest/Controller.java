@@ -41,7 +41,7 @@ public class Controller {
 	
 	@GetMapping("/frequency/{idRequest}")
 	public ResponseEntity<List<TopicDAO>> frecuency(@PathVariable("idRequest") String idRequest) {
-		List<TopicDAO> tempFeed = services.getFeedByIdRequest(idRequest);
+			List<TopicDAO> tempFeed = services.getFeedByIdRequest(idRequest);
 		return new ResponseEntity<List<TopicDAO>>(tempFeed,HttpStatus.OK);
 	}
 }
