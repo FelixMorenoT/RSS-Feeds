@@ -15,7 +15,6 @@ public class TopicSelector {
 	@Value("${exclude}")
 	private String toExclude; 
 	
-	
 	public Set<String> extractAllTopics(String input) {
 		
 		String output = input.toLowerCase();

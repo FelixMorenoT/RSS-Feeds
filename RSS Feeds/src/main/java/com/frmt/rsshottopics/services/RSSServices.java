@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.frmt.rsshottopics.entities.Feed;
 import com.frmt.rsshottopics.entities.Topic;
 import com.frmt.rsshottopics.repositories.FeedRepository;
+import com.frmt.rsshottopics.repositories.TopicRepository;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
@@ -23,7 +25,13 @@ public class RSSServices {
 	private FeedRepository feedRepository;
 	
 	@Autowired
+	private TopicRepository	topicRepository;
+	
+	@Autowired
 	private TopicSelector topicSelector;
+	
+	@Value("${maxtopics}")
+	private Integer maxTopics;
 	
 	public void loadData(String idRequest, String url) {
 
@@ -44,9 +52,19 @@ public class RSSServices {
 				tempFedd.setListTopics(tempListTopic);
 				feedRepository.save(tempFedd);
 			}
-			
+
 		} catch (Exception e) {
 			System.out.println("ERRRO "  + e);
 		} 
+	}
+	
+	public void getFeedByIdRequest(String idRequest) {
+		List<Object[]> tempResult = topicRepository.getHotTopics(idRequest);
+
+		for (Object[] objects : tempResult) {
+			System.out.println(">>> " + objects[0]);
+		}
+		
+	
 	}
 }
