@@ -9,31 +9,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.frmt.rsshottopics.dao.TopicDAO;
 import com.frmt.rsshottopics.services.RSSServices;
+import com.rometools.rome.io.FeedException;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RestController
 public class Controller {
 	
-	final static Logger logger = LoggerFactory.getLogger(Controller.class);
-
 	@Autowired
 	private RSSServices services;
 	
 	@PostMapping("/analyse/new")
-	public ResponseEntity<String> analyseNew(@RequestBody List<String> listUrls) {
+	public ResponseEntity<String> analyseNew(@RequestBody List<String> listUrls) throws IOException, FeedException{
 		
 		String idRequest = UUID.randomUUID().toString().replace("-", "");
 		
-		try {
 			if(listUrls.size() < 2) {
-				logger.error("Two url's are required");
-				return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+				throw new com.frmt.rsshottopics.exception.FeedException("Two url's are required");
 			}
 			
 			for (String urlValue : listUrls) {
@@ -41,16 +37,11 @@ public class Controller {
 			}
 			
 			return new ResponseEntity<String>(idRequest,HttpStatus.OK);
-		} catch (Exception e) {
-			return null;
-		}
-	
-	}
+	} 
 	
 	@GetMapping("/frequency/{idRequest}")
-	public String frecuency(@PathVariable("idRequest") String idRequest) {
-		
-			services.getFeedByIdRequest(idRequest);
-		return "Testing";
+	public ResponseEntity<List<TopicDAO>> frecuency(@PathVariable("idRequest") String idRequest) {
+		List<TopicDAO> tempFeed = services.getFeedByIdRequest(idRequest);
+		return new ResponseEntity<List<TopicDAO>>(tempFeed,HttpStatus.OK);
 	}
 }
