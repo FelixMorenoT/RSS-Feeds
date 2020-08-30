@@ -17,18 +17,18 @@ public class TopicSelector {
 	
 	public Set<String> extractAllTopics(String input) {
 		
-		String output = input.toLowerCase();
+		String tempInput = input.toLowerCase();
 		
-		output = stripAccents(output);
+		tempInput = stripAccents(tempInput);
 		
-		output = output.replaceAll("[^a-z0-9 ]", "").replace("  ", " ");
+		tempInput =tempInput.replaceAll("[^a-z0-9 ]", "").replace("  ", " ");
 		
 		for (String exclude : toExclude.split(",")) {
-			output = output.replaceAll("\\b" + exclude + "\\b", "");
+			tempInput = tempInput.replaceAll("\\b" + exclude + "\\b", "");
 		}
 				
 		Set<String> result = new HashSet<>();
-		Collections.addAll(result, output.trim().split(" +"));
+		Collections.addAll(result, tempInput.trim().split(" +"));
 		
 		return result;
 	}

@@ -52,6 +52,7 @@ public class RSSServices {
 				Topic topic = new Topic(name);
 				tempListTopic.add(topic);
 			}
+			
 			tempFedd.setListTopics(tempListTopic);
 			feedRepository.save(tempFedd);
 		}
