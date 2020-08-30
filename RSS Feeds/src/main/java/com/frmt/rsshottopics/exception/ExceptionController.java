@@ -13,14 +13,25 @@ import com.rometools.rome.io.FeedException;
 public class ExceptionController {
 
 	@ExceptionHandler
-	public ResponseEntity<FeedException> handlerFeedException (FeedException ex){
+	public ResponseEntity<ExceptionMessage> handlerFeedException (FeedException ex){
 	
-		return new ResponseEntity<FeedException>(ex,HttpStatus.INTERNAL_SERVER_ERROR);
+		ExceptionMessage error = new ExceptionMessage();
+		error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		error.setMessage(ex.getMessage());
+		error.setTimeStamp(System.currentTimeMillis());
+		
+		return new ResponseEntity<ExceptionMessage>(error,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@ExceptionHandler
-	public ResponseEntity<IOException> handlerIOException (IOException ex){
-		return new ResponseEntity<IOException>(ex,HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<ExceptionMessage> handlerIOException (IOException ex){
+		
+		ExceptionMessage error = new ExceptionMessage();
+		error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		error.setMessage(ex.getMessage());
+		error.setTimeStamp(System.currentTimeMillis());
+		
+		return new ResponseEntity<ExceptionMessage>(error,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@ExceptionHandler
